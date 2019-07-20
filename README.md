@@ -23,5 +23,9 @@ Covert the epoch seconds to broken-down time representation in UTC+2:
 * On Windows platform, it requires gmtime_s() and localtime_s() to work.
 * On POSIX-compliant platform, it requires gmtime_r() and localtime_r() to work.
 
+# How to verify?
+
+You can verify the result with [EpochConverter online tool](https://www.epochconverter.com/timezones).
+
 # License
 zlib
