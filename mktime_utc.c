@@ -45,31 +45,6 @@ static void localtime_x(time_t* _t, struct tm* _tm)
 #endif
 }
 
-static time_t timediff_local_utc0()
-{
-    /*
-        Use now as a fixed time point (in epoch seconds),
-        find out the broken-down time representations for
-        both UTC+0 and local timezone.
-    */
-    time_t now = time(NULL);
-    struct tm tm_utc, tm_local;
-    gmtime_x(&now, &tm_utc);
-    localtime_x(&now, &tm_local);
-
-    /*
-        View the above 2 broken-down time representations as in local,
-        and convert back to be epoch seconds. This gives the seconds
-        difference between UTC+0 and local timezone. Daylight saving
-        time shall be considered if it's in effect.
-     */
-    tm_local.tm_isdst = -1;
-    time_t t1 = mktime(&tm_utc);
-    time_t t2 = mktime(&tm_local);
-
-    return t1 - t2;
-}
-
 #define UTC_TZ(x) (x*3600)
 
 /*
@@ -91,13 +66,34 @@ static time_t timediff_local_utc0()
 time_t mktime_utc(struct tm *_tm, time_t _utc_tz)
 {
     /*
+        Use now as a fixed time point (in epoch seconds),
+        find out the broken-down time representations for
+        both UTC+0 and local timezone.
+    */
+    time_t now = time(NULL);
+    struct tm tm_utc, tm_local;
+    gmtime_x(&now, &tm_utc);
+    localtime_x(&now, &tm_local);
+
+    /*
+        View the above 2 broken-down time representations as in local,
+        and convert back to be epoch seconds. This gives the seconds
+        difference between UTC+0 and local timezone. Daylight saving
+        time shall be considered if it's in effect.
+     */
+    tm_local.tm_isdst = -1;
+    time_t t1 = mktime(&tm_utc);
+    time_t t2 = mktime(&tm_local);
+    time_t time_diff = t1 - t2;
+    
+    /*
        To get epoch seconds in target timezone (_utc_tz), first view
        _tm in local timezone and get the epoch seconds by mktime(). Then
        apply the time_diff to get the epoch seconds of _tm in UTC+0.
        Finally apply the _utc_tz to get the epoch seconds of _tm in target
        timezone.
      */
-    return mktime(_tm) - timediff_local_utc0() - _utc_tz;
+    return mktime(_tm) - time_diff - _utc_tz;
 }
 
 /*
