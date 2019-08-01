@@ -3,7 +3,7 @@ A tweaked version of mktime() and localtime() that to be able to work in any tim
 
 # Why?
 
-If you ever want to convert epoch seconds to a break-down time representation, you should have found out that mktime() is all you can count on. But unfortunately it could only work in local timezone. If you want do the convertion in any timezone you want, try use mktime_utc() and localtime_utc() provided here as a drop-in-replacement.
+If you ever want to convert epoch seconds to a break-down time representation, you should have found out that mktime() is all you can count on. But unfortunately it could only work in local timezone. If you want do the convertion in any desired timezone, try use mktime_utc() and localtime_utc() provided here as a drop-in-replacement.
 
 # Quick examples
 
