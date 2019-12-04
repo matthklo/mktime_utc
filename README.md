@@ -1,6 +1,8 @@
 # mktime_utc
 A tweaked version of mktime() and localtime() that to be able to work in any timezone you want.
 
+Updated: Forget my toy, you should really check this library instead: [free, open source, C++11/14 timezone library](https://howardhinnant.github.io/date/tz.html)
+
 # Why?
 
 If you ever want to convert epoch seconds to a break-down time representation, you should have found out that mktime() is all you can count on. But unfortunately it could only work in local timezone. If you want do the convertion in any desired timezone, try use mktime_utc() and localtime_utc() provided here as a drop-in-replacement.
